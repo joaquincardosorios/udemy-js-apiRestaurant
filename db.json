@@ -1,0 +1,76 @@
+{
+    "platillos": [
+      {
+        "id": 1,
+        "nombre": "Pizza a la Leña Chica",
+        "precio": 10000,
+        "categoria": 1
+      },
+      {
+        "id": 2,
+        "nombre": "Pizza a la Leña Mediana",
+        "precio": 13000,
+        "categoria": 1
+      },
+      {
+        "id": 3,
+        "nombre": "Rebanada de Pay de Limón",
+        "precio": 10000,
+        "categoria": 3
+      },
+      {
+        "id": 4,
+        "nombre": "Rebanada de Pastel de Chocolate",
+        "precio": 5000,
+        "categoria": 3
+      },
+      {
+        "id": 5,
+        "nombre": "Jugo de Naranja",
+        "precio": 3500,
+        "categoria": 2
+      },
+      {
+        "id": 6,
+        "nombre": "Pizza a la Leña Grande",
+        "precio": 18000,
+        "categoria": 1
+      },
+      {
+        "id": 7,
+        "nombre": "Rib Eye 800g",
+        "precio": 20000,
+        "categoria": 1
+      },
+      {
+        "id": 8,
+        "nombre": "Jugo de Naranja pequeño",
+        "precio": 2000,
+        "categoria": 2
+      },
+      {
+        "id": 9,
+        "nombre": "Tequila",
+        "precio": 6500,
+        "categoria": 2
+      },
+      {
+        "id": 10,
+        "nombre": "Rebanada de Pay de Queso",
+        "precio": 8000,
+        "categoria": 3
+      },
+      {
+        "id": 11,
+        "nombre": "Café Americano",
+        "precio": 2000,
+        "categoria": 2
+      },
+      {
+        "id": 12,
+        "nombre": "Café Capuchino",
+        "precio": 3500,
+        "categoria": 2
+      }
+    ]
+  }
