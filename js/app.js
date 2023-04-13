@@ -29,5 +29,15 @@ function guardarCliente() {
         }
         return; 
     }
-    console.log('todo bien');
+
+    // Asignar datos de formulario a cliente
+    cliente = {...cliente, mesa, hora}
+
+    // Ocultar modal
+    const modalFormulario = document.querySelector('#formulario');
+    const modalBootstrap = bootstrap.Modal.getInstance(modalFormulario);
+    modalBootstrap.hide()
+
+
+    console.log(cliente);
 }
