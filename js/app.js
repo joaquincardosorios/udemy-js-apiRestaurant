@@ -81,22 +81,71 @@ function mostrarPlatillos(platos){
         row.classList.add('row', 'py-3', 'border-top');
 
         const nombre = document.createElement('DIV');
-        nombre.classList.add('col-md-4');
+        nombre.classList.add('col-4');
         nombre.textContent = plato.nombre;
 
         const precio = document.createElement('DIV');
-        precio.classList.add('col-md-3', 'fw-bold');
+        precio.classList.add('col-3', 'fw-bold');
         precio.textContent = `$ ${plato.precio}` ;
 
         const categoria = document.createElement('DIV');
-        categoria.classList.add('col-md-3');
+        categoria.classList.add('col-3');
         categoria.textContent = categorias[ plato.categoria ];
 
+        const inputCantidad = document.createElement('INPUT');
+        inputCantidad.type = 'number';
+        inputCantidad.min = 0;
+        inputCantidad.id = `producto-${plato.id}`;
+        inputCantidad.value = 0;
+        inputCantidad.classList.add('form-control');
+
+        // Funcion que detecta la cantidad y el platillo que se esta agregando
+        inputCantidad.onchange = function() {
+            const cantidad = parseInt( inputCantidad.value );
+            agregarPlatillo({...plato, cantidad})
+        };
+
+        const agregar = document.createElement('DIV');
+        agregar.classList.add('col-2');
+        agregar.appendChild(inputCantidad)
 
         row.appendChild(nombre);
         row.appendChild(precio);
         row.appendChild(categoria);
+        row.appendChild(agregar);
 
         contenido.appendChild(row);
     });
+}
+
+function agregarPlatillo(producto) {
+
+    let { pedido } = cliente;
+    // Revisar que la cantidad sea mayor a 0
+    if(producto.cantidad > 0 ){
+
+        // Comprueba que el articulo ya existe en el arreglo
+        if(pedido.some(articulo => articulo.id === producto.id)){
+            // El articulo existe, de actualiza la cantidad
+            const pedidoActualizado = pedido.map(articulo => {
+                if ( articulo.id === producto.id ){
+                    articulo.cantidad = producto.cantidad;
+                }
+                return articulo;
+            });
+            // Se asigna nuevo arreglo a cliente.pedido
+            cliente.pedido = [... pedidoActualizado];
+        }
+        else{
+            // El articulo no exis,te se agrega el arreglo
+            cliente.pedido = [...pedido, producto];
+        }
+        
+    } else{
+        // Eliminar elemneto cuando cantidad es igual a cero
+        const pedidoActualizado = pedido.filter( articulo => articulo.id !== producto.id )
+        cliente.pedido = [... pedidoActualizado];
+    }
+
+    console.log(cliente.pedido);
 }
