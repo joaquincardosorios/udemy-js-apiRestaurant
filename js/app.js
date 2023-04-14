@@ -146,6 +146,205 @@ function agregarPlatillo(producto) {
         const pedidoActualizado = pedido.filter( articulo => articulo.id !== producto.id )
         cliente.pedido = [... pedidoActualizado];
     }
+    // Limpiar HTML
+    const contenido = document.querySelector('#resumen .contenido')
+    limpiarHTML(contenido);
 
-    console.log(cliente.pedido);
+    if(cliente.pedido.length){
+        // Mostrar el resumen
+        actualizarResumen();
+    } else {
+        mensajePedidoVacio();
+    }
+
+    
+}
+
+function actualizarResumen(){
+    const contenido = document.querySelector('#resumen .contenido');
+
+    const resumen = document.createElement('DIV');
+    resumen.classList.add('col-6', 'card', 'py-2', 'px-3', 'shadow');
+
+    // Informacion Mesa
+    const mesa = document.createElement('P');
+    mesa.textContent = 'Mesa: ';
+    mesa.classList.add('fw-bold')
+
+    const mesaSpan = document.createElement('SPAN');
+    mesaSpan.textContent = cliente.mesa;
+    mesaSpan.classList.add('fw-normal');
+
+    // Informacion Hora
+    const hora = document.createElement('P');
+    hora.textContent = 'Hora: ';
+    hora.classList.add('fw-bold')
+
+    const horaSpan = document.createElement('SPAN');
+    horaSpan.textContent = cliente.hora;
+    horaSpan.classList.add('fw-normal');
+
+    // Agregar a los elementos padre
+    mesa.appendChild(mesaSpan);
+    hora.appendChild(horaSpan);
+
+    // Titulo de la seccion
+    const heading = document.createElement('H3');
+    heading.textContent = 'Platillos Consumidos';
+    heading.classList.add('my-4', 'text-center')
+
+    //Iterar sobre el arreglo de contenido
+    const grupo = document.createElement('UL');
+    let total = 0;
+    grupo.classList.add('list-group');
+
+    const {pedido} = cliente;
+
+    pedido.forEach(articulo => {
+        const {nombre, cantidad, precio, id} = articulo;
+        const lista = document.createElement('LI');
+        lista.classList.add('list-group-item');
+
+        const nombreElem = document.createElement('H4');
+        nombreElem.classList.add('my-4');
+        nombreElem.textContent = nombre;
+
+        // Cantidad articulo
+        const cantidadElem = document.createElement('P');
+        cantidadElem.classList.add('fw-bold');
+        cantidadElem.textContent = 'Cantidad: ';
+
+        const cantidadSpan = document.createElement('SPAN');
+        cantidadSpan.textContent = cantidad;
+        cantidadSpan.classList.add('fw-normal');
+
+        // Precio Articulo
+        const precioElem = document.createElement('P');
+        precioElem.classList.add('fw-bold');
+        precioElem.textContent = 'Precio: ';
+
+        const precioSpan = document.createElement('SPAN');
+        precioSpan.textContent = `$${precio}`;
+        precioSpan.classList.add('fw-normal');
+
+        // SubTotal
+        const totalElem = document.createElement('P');
+        totalElem.classList.add('fw-bold');
+        totalElem.textContent = 'SubTotal: ';
+
+        const totalSpan = document.createElement('SPAN');
+        totalSpan.textContent = calcularSubTotal(precio, cantidad);
+        totalSpan.classList.add('fw-normal');
+
+        // Boton eliminar
+        const btnEliminar = document.createElement('BUTTON');
+        btnEliminar.classList.add('btn', 'btn-danger' ,'btn-sm');
+        btnEliminar.textContent = 'Eliminar el Pedido';
+
+        // Funcion eliminar pedido
+        btnEliminar.onclick = function() {
+            eliminarProducto(id);
+        }
+
+        
+        // Agregar valores a sus contenedores
+        cantidadElem.appendChild(cantidadSpan);
+        precioElem.appendChild(precioSpan);
+        totalElem.appendChild(totalSpan);
+
+
+        // Agregar elementos al LI
+        lista.appendChild(nombreElem);
+        lista.appendChild(cantidadElem);
+        lista.appendChild(precioElem);
+        lista.appendChild(totalElem);
+        lista.appendChild(btnEliminar);
+
+
+        // Agregar lista al grupo principal
+        grupo.appendChild(lista)
+
+        
+    });
+
+
+    // Agregar al contenido
+    resumen.appendChild(heading);
+    resumen.appendChild(hora);
+    resumen.appendChild(mesa);
+    resumen.appendChild(grupo);
+
+    contenido.appendChild(resumen);
+
+    // Mostrar formulario de Propinas
+    formularioPropinas();
+
+}
+
+function limpiarHTML(contenido){
+    while(contenido.firstChild){
+        contenido.removeChild(contenido.firstChild);
+    }
+}
+
+function calcularSubTotal(precio, cantidad){
+    return `$ ${precio * cantidad}`
+}
+
+function eliminarProducto(id){
+    const { pedido } = cliente
+    const pedidoActualizado = pedido.filter( articulo => articulo.id !== id )
+    cliente.pedido = [...pedidoActualizado];
+
+    console.log(cliente.pedido)
+
+    // Limpiar HTML
+    const contenido = document.querySelector('#resumen .contenido')
+    limpiarHTML(contenido);
+
+    if(cliente.pedido.length){
+        // Mostrar el resumen
+        actualizarResumen();
+    } else {
+        mensajePedidoVacio();
+    }
+
+    // El producto se elimino, por lo que se regresa el form a cero
+    const productoEliminado = `#producto-${id}`;
+    const inputEliminado = document.querySelector(productoEliminado);
+    inputEliminado.value = 0;
+
+
+}
+
+function mensajePedidoVacio(){
+    const contenido = document.querySelector('#resumen .contenido');
+
+    const texto = document.createElement('P');
+    texto.classList.add('text-center');
+    texto.textContent = 'Añade los elementos del pedido'
+
+    contenido.appendChild(texto);
+}
+
+function formularioPropinas(){
+    const contenido = document.querySelector('#resumen .contenido');
+
+    const formPropinas = document.createElement('DIV');
+    formPropinas.classList.add('col-6', 'formulario');
+
+    const divForm = document.createElement('DIV');
+    divForm.classList.add('card', 'py-2', 'px-3', 'shadow');
+
+    const heading = document.createElement('H3');
+    heading.classList.add('my-4', 'text-center');
+    heading.textContent = 'Propina';
+
+
+
+
+    divForm.appendChild(heading);
+
+    formPropinas.appendChild(divForm)
+    contenido.appendChild(formPropinas);
 }
